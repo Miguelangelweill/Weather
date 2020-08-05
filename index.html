@@ -16,19 +16,27 @@
       crossorigin="anonymous"
     />
     <!--These are my personal links-->
-    <!--Style sheey-->
+    <!--Style sheet-->
     <link
       rel="stylesheet
         "
       href="./02-Homework/Assets/style.css"
     />
+    <link rel="stylesheet" href="./02-Homework/Assets/reset.css">
     <script
       src="https://kit.fontawesome.com/5061fc92fa.js"
       crossorigin="anonymous"
     ></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--the link to my google fonts-->
-    <link href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Antic+Slab&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lemonada:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <title>Weather channel</title>
   </head>
   <body class="responsive">
@@ -37,7 +45,7 @@
     </header>
 
     <main id="mainContainer" class="row">
-      <span id="searchContainer" class="col-md-3 col-xs-12 col-sm-12 ">
+      <span id="searchContainer" class="col-md-3 col-xs-12 col-sm-12">
         <form id="searchForm" class="row rounded">
           <input id="input" placeholder="City" type="text" class="col-md-10" />
           <button class="col-2" id="searchButton">
@@ -45,33 +53,27 @@
           </button>
         </form>
       </span>
-      
-      <span id="theWeather" class="col-md-9 col-xs-12 col-sm-12 ">
+
+      <span id="theWeather" class="col-md-9 col-xs-12 col-sm-12">
         <section id="todayWeather" class="row rounded">
           <h1 class="col-md-12" id="cityDate"></h1>
-          <img id="iconMain"/>
+          <img id="iconMain" />
           <p class="col-md-12" id="temperature"></p>
           <p class="col-md-12" id="humidity"></p>
           <p class="col-md-12" id="wind"></p>
           <p class="col-md-12" id="uv"></p>
         </section>
-     
+        <br />
+        <h2>
+          5-day Forecast
+        </h2>
+
         <section id="weekWeather" class="row">
-          <div class="week1 week col-md-2 rounded ">
-
-          </div>
-          <div class="week2 week col-md-2 rounded">
-
-          </div>
-          <div class="week3 week col-md-2 rounded">
-
-          </div>
-          <div class="week4 week col-md-2 rounded">
-
-          </div>
-          <div class="week5 week col-md-2 rounded">
-
-          </div>
+          <span class="week1 week col-2 rounded"> </span>
+          <span class="week2 week col-2 rounded"> </span>
+          <span class="week3 week col-2 rounded"> </span>
+          <span class="week4 week col-2 rounded"> </span>
+          <span class="week5 week col-2 rounded"> </span>
         </section>
       </span>
     </main>

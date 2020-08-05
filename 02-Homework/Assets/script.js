@@ -18,15 +18,14 @@ $("#searchButton").click(function (event) {
   $("#theWeather").show()
   //these are my variables for the city input and the url to get the weather from each respective city
   var city = $("input").val();
-
   ajaxFunction(city);
   //if local storage already has this value dont save again,
-  if (!library.includes(city)) {
+  if (!library.includes(city.toLowerCase())) {
     library.push(city.toLowerCase());
     localStorage.setItem("library", JSON.stringify(library));
     var previousSearch = $("<button>");
     previousSearch.attr("class", "col-12 previousSearch");
-    previousSearch.text(city);
+    previousSearch.text(city.toLowerCase());
     $("#searchForm").append(previousSearch);
   }
 });
@@ -63,15 +62,18 @@ function ajaxFunction(cityInput) {
       "src",
       "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png"
     );
-
+    weatherIcon.attr('alt','The weather icon')
     var temperature = response.main.temp;
     temperature = (temperature - 273.15) * 1.8 + 32;
     temperature = Math.round(temperature);
     temperature = JSON.stringify(temperature);
-    $("#temperature").text("Temperature: " + temperature + "F");
+    $("#temperature").text("Temperature: " + temperature + " °F");
 
     var humidity = JSON.stringify(response.main.humidity);
     $("#humidity").text("Humidity: " + humidity + "%");
+
+    var wind = JSON.stringify(response.wind.speed);
+    $("#wind").text("Wind Speed: "+wind+"mph");
     //this is are my variables for the UV index
     var latitud = response.coord.lat;
     var longitud = response.coord.lon;
@@ -107,10 +109,10 @@ function ajaxFunction(cityInput) {
         var week1header = $("<h1>");
         nextday++;
         week1header.text(
-          moment().add(nextday, "days").format("M/D/YYYY") +
+          moment().add(nextday, "days").format("M/D/YY") +
             " Temp: " +
             week1Temperature +
-            "F"
+            " °F"
         );
         $(elementTarget).append(week1header);
 
@@ -121,6 +123,7 @@ function ajaxFunction(cityInput) {
             week.list[weekIndex].weather[0].icon +
             ".png"
         );
+        forecastIcon.attr('alt','The weather icon')
         $(elementTarget).append(forecastIcon);
 
         var week1Humidity = week1.main.humidity;

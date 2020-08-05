@@ -40,7 +40,7 @@ $(".previousSearch").click(function (event) {
 //This is the function where i retrieve all of the iformation from the open weather api, with the ajax method
 function ajaxFunction(cityInput) {
   var queryURL =
-    "http://api.openweathermap.org/data/2.5/weather?q=" +
+    "https://api.openweathermap.org/data/2.5/weather?q=" +
     cityInput +
     "&appid=e5f561d692ee5b0d5bfef99cb764f31d";
 
@@ -76,7 +76,7 @@ function ajaxFunction(cityInput) {
     var longitud = response.coord.lon;
     //The url for the UV index
     var uv =
-      "http://api.openweathermap.org/data/2.5/uvi?appid=e5f561d692ee5b0d5bfef99cb764f31d&lat=" +
+      "https://api.openweathermap.org/data/2.5/uvi?appid=e5f561d692ee5b0d5bfef99cb764f31d&lat=" +
       latitud +
       "&lon=" +
       longitud;
@@ -87,7 +87,7 @@ function ajaxFunction(cityInput) {
 
     //The api url for the full week forecast
     var theWeekHandler =
-      "http://api.openweathermap.org/data/2.5/forecast?q=" +
+      "https://api.openweathermap.org/data/2.5/forecast?q=" +
       response.name +
       "&appid=e5f561d692ee5b0d5bfef99cb764f31d";
     //The ajax method where i retrieve all of the information from the api

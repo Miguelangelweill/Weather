@@ -42,5 +42,15 @@ You are required to submit the following for review:
 
 * The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
 
+## My work
+This is what my weather application offers:
+* First we present the user with a form input where they can search for a city.
+* Given the input from the user we will display the weather for the current day and week.
+* We save the previous search in the shape of a button so it can be searched for again by just clicking on the name of the city you wish to search for.
+* When the page is refreshed the buttons from your previous search persist and you can simply click on them to display the weather for the city.
+* All of the weather information is retrieved from the Open Weather Api .
+
+
+
 - - -
 © 2019 Trilogy Education Services, a 2U, Inc. brand. All Rights Reserved.

@@ -1,7 +1,6 @@
-
-
-//this is the click button
+//Array of city's that have been searched for
 var library = [];
+// If there is an item in the library key inside of the lokal storage retrieve it and append it to the form in the shape of a button
 if (localStorage.getItem("library")) {
   library = JSON.parse(localStorage.getItem("library"));
   for (var i = 0; i < library.length; i++) {
@@ -11,15 +10,17 @@ if (localStorage.getItem("library")) {
     $("#searchForm").append(newbutton);
   }
 }
-$('#theWeather').hide()
+//The weather container is mantained hidden untill one of the clicks is excecuted on any of the buttons
+$("#theWeather").hide();
+//This is the click for my search button
 $("#searchButton").click(function (event) {
-  //prevent the button from doing what it is supposed to do
   event.preventDefault();
-  $("#theWeather").show()
-  //these are my variables for the city input and the url to get the weather from each respective city
+  //Show the weather container
+  $("#theWeather").show();
+  //The city that the user will like to search for, run the function with the value of this input inside of it
   var city = $("input").val();
   ajaxFunction(city);
-  //if local storage already has this value dont save again,
+  //If this item does not already exsist in local add it to local storage and convert its characteristics to lower case
   if (!library.includes(city.toLowerCase())) {
     library.push(city.toLowerCase());
     localStorage.setItem("library", JSON.stringify(library));
@@ -29,28 +30,23 @@ $("#searchButton").click(function (event) {
     $("#searchForm").append(previousSearch);
   }
 });
-//control the click on my elemtns from local storage
+//Shows the previous search when you click on the button with the name of the previous change
 $(".previousSearch").click(function (event) {
   event.preventDefault();
-  $("#theWeather").show()
-  ajaxFunction(event.target.textContent)
+  $("#theWeather").show();
+  ajaxFunction(event.target.textContent);
 });
+
+//This is the function where i retrieve all of the iformation from the open weather api, with the ajax method
 function ajaxFunction(cityInput) {
   var queryURL =
     "http://api.openweathermap.org/data/2.5/weather?q=" +
     cityInput +
     "&appid=e5f561d692ee5b0d5bfef99cb764f31d";
-  console.log(cityInput);
-  //here i will make an array to store my previous search
-  //this is where i start my ajax method and get all of the information from the weather api
 
   $.get(queryURL).then(function (response) {
-    console.log(response);
-    //here i make sure the main container is empty the moment the user loads the screen
+    //Every time i run the function clear the main container to prevent the information to append to itself
     $("mainContainer").empty();
-
-    var iconHandler = response.weather[0].icon;
-    console.log(iconHandler);
 
     var cityDate = response.name;
     $("#cityDate").text(
@@ -62,7 +58,8 @@ function ajaxFunction(cityInput) {
       "src",
       "https://openweathermap.org/img/w/" + response.weather[0].icon + ".png"
     );
-    weatherIcon.attr('alt','The weather icon')
+    weatherIcon.attr("alt", "The weather icon");
+
     var temperature = response.main.temp;
     temperature = (temperature - 273.15) * 1.8 + 32;
     temperature = Math.round(temperature);
@@ -73,48 +70,53 @@ function ajaxFunction(cityInput) {
     $("#humidity").text("Humidity: " + humidity + "%");
 
     var wind = JSON.stringify(response.wind.speed);
-    $("#wind").text("Wind Speed: "+wind+"mph");
-    //this is are my variables for the UV index
+    $("#wind").text("Wind Speed: " + wind + "mph");
+    //These are the variables i need to find the UV index
     var latitud = response.coord.lat;
     var longitud = response.coord.lon;
-    //this is the url for the UV index
+    //The url for the UV index
     var uv =
       "http://api.openweathermap.org/data/2.5/uvi?appid=e5f561d692ee5b0d5bfef99cb764f31d&lat=" +
       latitud +
       "&lon=" +
       longitud;
+    //The ajax method that i use to retrieve the uv index
     $.get(uv).then(function (uvIndex) {
-    
       $("#uv").text("UV: " + uvIndex.value);
     });
 
+    //The api url for the full week forecast
     var theWeekHandler =
       "http://api.openweathermap.org/data/2.5/forecast?q=" +
       response.name +
       "&appid=e5f561d692ee5b0d5bfef99cb764f31d";
+    //The ajax method where i retrieve all of the information from the api
     $.get(theWeekHandler).then(function (week) {
       console.log(week);
-      //this will empty the week container everytime the function runs
+      //Empty the week container for the information not to append to itself
       $(".week").empty();
-      //this is the value inside of the first week object
-      var nextday = 0;
-      function myWeeks(weekIndex, elementTarget) {
-        var week1 = week.list[weekIndex];
-        console.log(week1);
 
-        var week1Temperature = week1.main.temp;
-        week1Temperature = Math.floor(
-          Math.round((week1Temperature - 273.15) * 1.8 + 32)
-        );
-        var week1header = $("<h1>");
+      //I use this variable to keep track of the day's I am displaying
+      var nextday = 0;
+
+      function myWeeks(weekIndex, elementTarget) {
+        var weekForecast = week.list[weekIndex];
+        //Add one everytime the function runs
         nextday++;
-        week1header.text(
+
+        var weekForecastTemperature = weekForecast.main.temp;
+        weekForecastTemperature = Math.floor(
+          Math.round((weekForecastTemperature - 273.15) * 1.8 + 32)
+        );
+
+        var weekForecastheader = $("<h1>");
+        weekForecastheader.text(
           moment().add(nextday, "days").format("M/D/YY") +
             " Temp: " +
-            week1Temperature +
+            weekForecastTemperature +
             " °F"
         );
-        $(elementTarget).append(week1header);
+        $(elementTarget).append(weekForecastheader);
 
         var forecastIcon = $("<img>");
         forecastIcon.attr(
@@ -123,15 +125,17 @@ function ajaxFunction(cityInput) {
             week.list[weekIndex].weather[0].icon +
             ".png"
         );
-        forecastIcon.attr('alt','The weather icon')
+        forecastIcon.attr("alt", "The weather icon");
         $(elementTarget).append(forecastIcon);
 
-        var week1Humidity = week1.main.humidity;
-        var week1HumidityEl = $("<h1>");
-        week1HumidityEl.text("Humidity: " + week1Humidity + "%");
-        $(elementTarget).append(week1HumidityEl);
-      }
+        var weekForecastHumidity = weekForecast.main.humidity;
 
+        var weekForecastHumidityEl = $("<h1>");
+        weekForecastHumidityEl.text("Humidity: " + weekForecastHumidity + "%");
+        $(elementTarget).append(weekForecastHumidityEl);
+
+      }
+      //Run the functions for the indivudual weeks and get the information from the number of the array provided
       myWeeks(0, ".week1");
       myWeeks(8, ".week2");
       myWeeks(16, ".week3");
